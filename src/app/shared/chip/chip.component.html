@@ -1,0 +1,28 @@
+<mat-form-field appearance="outline" class="col-md-12">
+  <mat-label>{{ title }}</mat-label>
+  <mat-chip-list #chipList aria-label="Search">
+    <mat-chip
+      *ngFor="let value of list; let idx = index"
+      [selectable]="selectable"
+      [removable]="removable"
+      (removed)="removeChip(value)"
+    >
+      {{ value }}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input
+      placeholder="Search"
+      class="inputList"
+      #inputValue
+      [formControl]="valueCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+    />
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let val of filteredValues | async" [value]="val">
+      {{ val }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

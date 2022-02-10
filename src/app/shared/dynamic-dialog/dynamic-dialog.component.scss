@@ -1,0 +1,62 @@
+@import "../../../styles.scss";
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  .title {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 16px;
+  }
+
+  .content {
+    padding: 0;
+    white-space: pre-line;
+  }
+
+  .actions-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 2px;
+
+    button {
+      outline: none;
+      &:disabled {
+        background: #ccc;
+        color: rgb(133, 133, 133);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.primary {
+  .header {
+    color: white;
+    background-color: $blue;
+  }
+}
+
+.secondary {
+  .header {
+    background-color: #ccc;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
+.danger {
+  .header {
+    background-color: rgb(214, 127, 127);
+    color: black;
+  }
+}
+.default {
+  background-color: white;
+}

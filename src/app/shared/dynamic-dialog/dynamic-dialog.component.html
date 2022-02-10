@@ -1,0 +1,28 @@
+<div class="main {{ dialogTypeClass }}">
+  <div class="col-md-12 content">
+    <p class="col-md-12 header">
+      {{ data?.containedText }}
+    </p>
+    <ng-container [ngTemplateOutlet]="data?.template ?? null"> </ng-container>
+  </div>
+
+  <mat-dialog-actions
+    [ngStyle]="{
+      'justify-content': data?.buttonConfig?.containerStyle?.justifyContent
+    }"
+    class="actions-container"
+  >
+    <button
+      *ngFor="let button of data?.buttonConfig?.buttonList"
+      mat-flat-button
+      id="{{ button?.id }}"
+      color="{{ button?.styleType }}"
+      [disabled]="
+        button.hasOwnProperty('isDisabled') ? button?.isDisabled() : false
+      "
+      [mat-dialog-close]="button.onClick"
+    >
+      {{ button?.text }}
+    </button>
+  </mat-dialog-actions>
+</div>

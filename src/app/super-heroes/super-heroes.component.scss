@@ -1,0 +1,79 @@
+@import "../../styles.scss";
+
+.hero-table {
+  margin: 10px 0;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  .mat-header-row {
+    background-color: #ddd;
+    padding-top: 10px;
+  }
+  tr td.icon {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center !important;
+    padding: 0 !important;
+  }
+
+  th,
+  td {
+    overflow: hidden;
+    min-width: 5em;
+    padding-left: 10px !important;
+    margin: 1px;
+    height: 100%;
+    width: auto;
+    vertical-align: middle;
+  }
+  thead {
+    tr.mat-header-row {
+      height: auto !important;
+    }
+  }
+  th {
+    background-color: $blue;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    width: auto;
+  }
+  td {
+    text-align: left;
+  }
+  .mat-icon {
+    font-size: 20px;
+  }
+  .collapsed {
+    display: none;
+  }
+}
+
+.selected-row {
+  background-color: #ccc;
+}
+
+.blue {
+  background-color: $blue;
+  color: white;
+}
+
+.button {
+  max-height: 60px;
+  top: 22px;
+  button {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+::ng-deep .mat-form-field {
+  padding: 10px;
+  margin: 10px;
+  max-height: 50px;
+}
+
+.bg-white {
+  background-color: transparent !important;
+  color: black !important;
+}

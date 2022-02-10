@@ -1,0 +1,241 @@
+<div class="row">
+  <app-chip
+    *ngIf="listValues.length > 0"
+    [title]="'Search by name'"
+    [filterValues]="listValues"
+    (onChange)="filter($event)"
+    class="col-md-8"
+  ></app-chip>
+  <div class="col-md-4 button">
+    <button mat-button color="primary" (click)="createHero()">
+      Create hero
+    </button>
+  </div>
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    multiTemplateDataRows
+    class="result-table col-md-12"
+    matSortActive="name"
+    matSort
+    (matSortChange)="sortData($event)"
+    class="hero-table"
+  >
+    <caption></caption>
+    <ng-container matColumnDef="name">
+      <th
+        id="name"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="nameLabel"
+      >
+        Hero name
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.nameLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="gender">
+      <th
+        id="gender"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="genderLabel"
+      >
+        Hero gender
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.genderLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="citizenship">
+      <th
+        id="gender"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="citizenshipLabel"
+      >
+        Hero citizenship
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.citizenshipLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="skills">
+      <th
+        id="skills"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="skillsLabel"
+      >
+        Hero skills
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.skillsLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="occupation">
+      <th
+        id="occupation"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="occupationLabel"
+      >
+        Hero occupation
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.occupationLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="memberOf">
+      <th
+        id="memberOf"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="memberOfLabel"
+      >
+        Hero member Of
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.memberOfLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="creator">
+      <th
+        id="creator"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="creatorLabel"
+      >
+        Hero creator
+      </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row?.creatorLabel }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <th id="edit" mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell class="icon" *matCellDef="let row; let idx = dataIndex">
+        <button
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Opts"
+          aria-hidden="false"
+          (click)="editHero($event, row)"
+        >
+          <mat-icon aria-hidden="false" aria-label="search">edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th id="delete" mat-header-cell *matHeaderCellDef>Delete</th>
+      <td
+        mat-cell
+        class="icon"
+        *matCellDef="let idx = dataIndex; let row"
+        (click)="deleteHero($event, row)"
+      >
+        <button
+          mat-button
+          matSuffix
+          mat-icon-button
+          aria-label="Opts"
+          aria-hidden="false"
+          class="button-icons"
+        >
+          <mat-icon aria-hidden="false" aria-label="search" color="warn"
+            >delete</mat-icon
+          >
+        </button>
+      </td>
+    </ng-container>
+    <!-- Header row second group -->
+    <ng-container matColumnDef="header-row-chars">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        class="bg-white"
+        [attr.colspan]="displayedColumns.length"
+      >
+        <app-dynamic-charts
+          *ngIf="data.length > 0"
+          [config]="configBar"
+          [data]="data"
+          [type]="typeChar"
+          [charName]="charName"
+        ></app-dynamic-charts>
+      </th>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-header-row *matHeaderRowDef="['header-row-chars']"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      [ngClass]="row === currentHero ? 'selected-row' : ''"
+      (click)="superHeroesPreview(row)"
+    ></tr>
+  </table>
+  <mat-paginator
+    #paginator
+    [length]="count"
+    [pageIndex]="currentPage"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[10, 20, 100]"
+    (page)="handlePage($event)"
+  >
+  </mat-paginator>
+</div>
+
+<ng-template #viewHeroDialog>
+  <form [formGroup]="heroForm" novalidate>
+    <div class="card">
+      <div class="card-header blue">
+        <h5 class="card-title">Hero</h5>
+      </div>
+      <div class="card-body">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput autocomplete="off" formControlName="nameLabel" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="genderLabel">
+            <mat-option *ngFor="let gender of genderValues" [value]="gender">{{
+              gender
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Citizenship</mat-label>
+          <input
+            matInput
+            autocomplete="off"
+            formControlName="citizenshipLabel"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Skills</mat-label>
+          <input matInput autocomplete="off" formControlName="skillsLabel" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Occupation</mat-label>
+          <input
+            matInput
+            autocomplete="off"
+            formControlName="occupationLabel"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Member of</mat-label>
+          <input matInput autocomplete="off" formControlName="memberOfLabel" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Creator</mat-label>
+          <input matInput autocomplete="off" formControlName="creatorLabel" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</ng-template>
